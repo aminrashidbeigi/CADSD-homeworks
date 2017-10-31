@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 10/22/2017 11:09:05 AM
+-- Create Date: 10/21/2017 06:46:52 PM
 -- Design Name: 
--- Module Name: bcd_type - Behavioral
+-- Module Name: comparator_1_bit - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -31,7 +31,16 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
+entity comparator_1_bit is
+    Port (
+    input1, input2: in std_logic;
+    output: out std_logic
+    );
+end comparator_1_bit;
 
-package bcd_type is
-    type bcd is array (3 downto 0) of std_logic;
-end bcd_type;
+architecture gate_level of comparator_1_bit is
+
+begin
+    output <= input1 and (not input2);
+
+end gate_level;
