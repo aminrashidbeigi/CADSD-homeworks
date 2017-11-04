@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 11/04/2017 03:29:26 PM
+-- Create Date: 11/04/2017 04:25:13 PM
 -- Design Name: 
--- Module Name: sensor - Behavioral
+-- Module Name: sensor_concurrent - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -32,14 +32,14 @@ USE IEEE.NUMERIC_STD.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity sensor is
+entity sensor_concurrent is
     port(
         sensor1, sensor2, sensor3, sensor4: in integer;
         output: out std_logic 
     );
-end sensor;
+end sensor_concurrent;
 
-architecture Behavioral of sensor is
+architecture Behavioral of sensor_concurrent is
 
     signal sumOfSensorValues: integer;
     signal averageOfSensorValues: Unsigned (15 downto 0);
@@ -47,13 +47,6 @@ begin
 
     sumOfSensorValues <= sensor1 + sensor2 + sensor3 + sensor4;
     averageOfSensorValues <= shift_right(to_unsigned(sumOfSensorValues,16), 2);
-    identifier : process( averageOfSensorValues )
-    begin
-        if averageOfSensorValues > "01100100" then
-            output <= '0';
-        else
-            output <= '1';
-        end if ;
-    end process ; -- identifier
-
+    output <= '0' when averageOfSensorValues > "1100100" else
+              '1' when averageOfSensorValues <= "1100100";
 end Behavioral;
