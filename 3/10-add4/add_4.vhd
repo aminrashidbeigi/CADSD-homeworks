@@ -43,5 +43,6 @@ architecture Behavioral of add_4 is
 
 begin
     sum <= std_logic_vector(unsigned('0'&a) + unsigned('0'&b));
+    assert std_logic_vector(unsigned('0'&a) + unsigned('0'&b)) < "11111" report "overflow" severity error;
 
 end Behavioral;
