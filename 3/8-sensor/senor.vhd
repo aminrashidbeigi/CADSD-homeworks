@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 10/31/2017 11:38:14 AM
+-- Create Date: 11/04/2017 03:29:26 PM
 -- Design Name: 
--- Module Name: counter_mod_m - Behavioral
+-- Module Name: sensor - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -21,7 +21,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use ieee.std_logic_unsigned.all;
+USE IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -32,29 +32,28 @@ use ieee.std_logic_unsigned.all;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity counter_mod_m is
-    generic(
-    module: std_logic_vector(5 downto 0) := "000100"
-    );
+entity sensor is
     port(
-    clk, rst: in std_logic;
-    output: out std_logic_vector(5 downto 0)
+        sensor1, sensor2, sensor3, sensor4: in integer;
+        output: out std_logic 
     );
-end counter_mod_m;
+end sensor;
 
-architecture Behavioral of counter_mod_m is
+architecture Behavioral of sensor is
 
-    signal output_signal : std_logic_vector(5 downto 0) := "000000";
+    signal sumOfSensorValues: integer;
+    signal averageOfSensorValues: Unsigned (15 downto 0);
 begin
-    process(clk, rst)
+
+    sumOfSensorValues <= sensor1 + sensor2 + sensor3 + sensor4;
+    averageOfSensorValues <= shift_right(to_unsigned(sumOfSensorValues,16), 2);
+    identifier : process( averageOfSensorValues )
     begin
-        if rst = '1' then
-            output_signal <= "000000";
-        elsif rising_edge(clk) then
-            output_signal <= output_signal + module;
+        if averageOfSensorValues > "01100100" then
+            output <= '0';
+        else
+            output <= '1';
         end if ;
-    end process ; 
-    
-    output<= output_signal;
+    end process ; -- identifier
 
 end Behavioral;
